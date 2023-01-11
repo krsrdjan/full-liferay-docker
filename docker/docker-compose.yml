@@ -1,0 +1,52 @@
+version: '3.2'
+
+services:
+
+  database:
+    image: mysql:8.0.29
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    #volumes:
+      #- ./data/mysql:/var/lib/mysql
+      #- ./mysql/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
+    command: ['mysqld', '--character-set-server=utf8mb4', '--lower_case_table_names=1']
+    networks:
+      - liferay
+
+  liferay:
+    image: full-liferay-docker-liferay:7.4.3.57-ga57
+    ports:
+      - "8080:8080"
+      - "8000:8000"
+#    volumes:
+#      - ./data/liferay/document_library:/opt/liferay/data/document_library
+#      - ../build/docker/deploy:/opt/liferay/deploy
+    hostname: liferay
+    networks:
+      - liferay
+    environment:
+      - JAVA_VERSION=zulu11
+      - WAIT_HOSTS=database:3306
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+
+  elasticsearch:
+    image: elasticsearch:7.17.4
+    environment:
+      - cluster.name=LiferayElasticsearchCluster
+      - node.name=LiferayElasticsearchNode
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      #- "ES_JAVA_OPTS=-Xms1024m -Xms1024m"
+    ports:
+      - "9200"
+#    volumes:
+#      - ./data/elasticsearch:/usr/share/elasticsearch/data
+    networks:
+      - liferay
+
+networks:
+  liferay:

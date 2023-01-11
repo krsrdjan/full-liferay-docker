@@ -3,20 +3,29 @@ This repo is example for complete Liferay 7.4 platform with MySQL and ES using D
 
 ## build project
 
-Make sure that you setup Java JDK 11 on classpath, then run
-```
+Make sure that you setup Java JDK 11 on classpath and Docker and docker-compose installed.
+Run this command
+```bash
 ./gradlew buildDockerImage
 ```
-to build docker image of Liferay Portal CE 7.4 locally.
+to build docker image of Liferay Portal CE 7.4 locally. 
+This image will be used in docker-compose.yml
 
 ## run project
-To run project, we need to run previous built image with port mapping and environment variables.
+To run project, you need to have Docker and docker-compose installed.
+Go to docker folder in project root and run
+```bash
+cd docker
+docker-compose up -d
 ```
-docker run -it -m 4g -p 8080:8080 -e JAVA_VERSION=zulu11 --name=liferay-portal-7.4 liferay/portal:7.4.3.57-ga57
-```
-Go to http://localhost:8080 to see Liferay Portal CE 7.4. 
+Wait for a while until all containers are up and running. Check Liferay container logs until you see
+"Server startup in [xxx] ms message". 
 
-Click on "Sign In" to see the login page. 
+Then you can access Liferay Portal at http://localhost:8080
+
+Click on "Sign In" to get login page. 
+
 Username is "test@liferay.com" and password is "test". 
-Update username and password and you are good to go. :)
+
+Update password, so you are good to go. :)
 

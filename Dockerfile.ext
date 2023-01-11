@@ -1,1 +1,12 @@
 # Any instructions here will be appended to the end of the Dockerfile created by `createDockerfile`.
+
+# implement wait logic for the database to be ready
+USER root
+ENV WAIT_VERSION 2.7.2
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
+RUN chmod +x /wait
+
+# start liferay
+USER liferay
+ENV VIRTUAL_PORT 8080
+ENTRYPOINT /wait && /usr/local/bin/liferay_entrypoint.sh
