@@ -1,5 +1,5 @@
 # full-liferay-docker
-This repo is example for complete Liferay 7.4 platform with MySQL and ES using Docker
+Example for complete Liferay 7.4 platform with MySQL and ES using Docker.
 
 ## build project
 
